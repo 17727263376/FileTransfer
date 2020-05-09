@@ -1,0 +1,11 @@
+package client.utils;
+
+public class SocketUtil {
+	//SOCKET·þÎñ¶Ë¼àÌý¶Ë¿Ú
+	public static final int SERCER_POST = 11111;
+	
+	
+	
+	
+	
+}
