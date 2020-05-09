@@ -100,6 +100,7 @@ public class InitPage extends JFrame {
 		innerButton = new JButton("\u5185\u7F51\u8FDE\u63A5");
 		innerButton.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 12));
 		innerButton.addActionListener(new ActionListener() {
+			
 			public void actionPerformed(ActionEvent e) {
 				//ÄÚÍøÁ¬½Óbutton
 				if(innerDisIp.getText().length() != 0 && innerDisIp.getText() != null) {
