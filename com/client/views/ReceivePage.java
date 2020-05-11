@@ -8,16 +8,22 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JTextField;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
+
 import java.awt.Color;
 import javax.swing.border.EtchedBorder;
 import javax.swing.JProgressBar;
 import javax.swing.border.LineBorder;
 
+import com.client.business.TcpServer;
 import com.client.common.IView;
 import com.client.common.WindowListennerAdapter;
+import com.client.utils.SocketUtil;
+import com.client.utils.UiUtil;
 
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 
@@ -32,6 +38,10 @@ public class ReceivePage extends JFrame implements IView {
 	private JButton choiceFileButton;
 	private JButton acceptButton;
 	private JProgressBar receiveProgress;
+	private File selectFile;
+	private TcpServer server;
+	
+	private boolean canReceive = false;
 
 	/**
 	 * Launch the application.
@@ -52,13 +62,16 @@ public class ReceivePage extends JFrame implements IView {
 	/**
 	 * Create the frame.
 	 */
-	public ReceivePage() {
+	public ReceivePage(String ip) {
+		server = TcpServer.getInstance();
+		server.setView(this);
+		
 		setTitle("17\u7F51\u7EDC\u5DE5\u7A0B1\u73ED\u8FC7\u5C0F\u864E");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		addWindowListener(new WindowListennerAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				System.out.println("receivePage closing");
+				server.close();
 				InitPage page = InitPage.getInstance();
 				page.setVisible(true);
 			}
@@ -80,7 +93,11 @@ public class ReceivePage extends JFrame implements IView {
 		choiceFileButton.setFont(new Font("微雅软黑", Font.PLAIN, 12));
 		choiceFileButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//ѡ���ļ�
+				//选择文件
+				selectFile = UiUtil.showFileSelect(JFileChooser.DIRECTORIES_ONLY);
+				if(selectFile != null) {
+					receiveFilePath.setText(selectFile.getAbsolutePath());
+				}
 			}
 		});
 		choiceFileButton.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
@@ -105,6 +122,14 @@ public class ReceivePage extends JFrame implements IView {
 		acceptButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//接受
+				if(selectFile != null) {
+					server.sendMessage(SocketUtil.ACCEPT_CONNECT);
+					
+					System.out.println("开始接收文件");
+				}else {
+					UiUtil.showDialogPage("您还未选择文件噢~", true);
+				}
+				
 			}
 		});
 		acceptButton.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
@@ -124,6 +149,11 @@ public class ReceivePage extends JFrame implements IView {
 		refuseButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//拒绝
+				server.sendMessage(SocketUtil.REFUSE_CONNECT);
+				setVisible(false);
+				server.close();
+				InitPage page = InitPage.getInstance();
+				page.setVisible(true);
 			}
 		});
 		refuseButton.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
@@ -133,7 +163,7 @@ public class ReceivePage extends JFrame implements IView {
 		
 		receiveTitleText = new JTextField();
 		receiveTitleText.setFont(new Font("微雅软黑", Font.PLAIN, 12));
-		receiveTitleText.setText("\u6536\u5230IP\uFF1A192.168.0.104\u53D1\u6765\u7684\u6587\u4EF6");
+		receiveTitleText.setText("收到IP为"+ ip +"发来的文件");
 		receiveTitleText.setEnabled(false);
 		receiveTitleText.setEditable(false);
 		receiveTitleText.setDisabledTextColor(Color.BLACK);
@@ -159,6 +189,11 @@ public class ReceivePage extends JFrame implements IView {
 	@Override
 	public void refrushProgress(int value) {
 		this.receiveProgress.setValue(value);
+	}
+
+	@Override
+	public void setCanUse(boolean val) {
+		
 	}
 
 }

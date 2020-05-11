@@ -40,7 +40,7 @@ public class InitPage extends JFrame {
 			public void run() {
 				try {
 					//Initial Socket Server
-					TcpServer ts = new TcpServer();
+					TcpServer ts = TcpServer.getInstance();
 					ts.startListen();
 					InitPage frame = InitPage.getInstance();
 					frame.setVisible(true);
