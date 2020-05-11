@@ -1,4 +1,4 @@
-package client.views;
+package com.client.views;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -10,8 +10,8 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.JProgressBar;
 import javax.swing.border.LineBorder;
 
-import client.common.IView;
-import client.common.WindowListennerAdapter;
+import com.client.common.IView;
+import com.client.common.WindowListennerAdapter;
 
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
@@ -64,16 +64,16 @@ public class SentPage extends JFrame implements IView{
 		contentPane.setLayout(null);
 		
 		FildPathTextField = new JTextField();
-		FildPathTextField.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 12));
+		FildPathTextField.setFont(new Font("å¾®é›…è½¯é»‘", Font.PLAIN, 12));
 		FildPathTextField.setBounds(87, 21, 234, 21);
 		contentPane.add(FildPathTextField);
 		FildPathTextField.setColumns(10);
 		
 		choiceFileButton = new JButton("\u9009\u62E9\u6587\u4EF6");
-		choiceFileButton.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 12));
+		choiceFileButton.setFont(new Font("å¾®é›…è½¯é»‘", Font.PLAIN, 12));
 		choiceFileButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//Ñ¡ÔñÎÄ¼ş
+				//é€‰æ‹©æ–‡ä»¶å¤¹
 			}
 		});
 		choiceFileButton.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
@@ -82,7 +82,7 @@ public class SentPage extends JFrame implements IView{
 		contentPane.add(choiceFileButton);
 		
 		textField_1 = new JTextField();
-		textField_1.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 12));
+		textField_1.setFont(new Font("å¾®é›…è½¯é»‘", Font.PLAIN, 12));
 		textField_1.setBackground(Color.WHITE);
 		textField_1.setBorder(null);
 		textField_1.setDisabledTextColor(Color.BLACK);
@@ -94,10 +94,10 @@ public class SentPage extends JFrame implements IView{
 		textField_1.setColumns(10);
 		
 		sendButton = new JButton("\u53D1\u9001");
-		sendButton.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 12));
+		sendButton.setFont(new Font("å¾®é›…è½¯é»‘", Font.PLAIN, 12));
 		sendButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//·¢ËÍÎÄ¼ş
+				//å‘é€æŒ‰é’®
 			}
 		});
 		sendButton.setBackground(Color.WHITE);

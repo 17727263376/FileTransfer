@@ -1,4 +1,4 @@
-package client.common;
+package com.client.common;
 
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;

@@ -1,4 +1,4 @@
-package client.views;
+package com.client.views;
 
 import java.awt.EventQueue;
 import javax.swing.JFrame;
@@ -7,12 +7,16 @@ import javax.swing.border.EmptyBorder;
 import java.awt.Color;
 import javax.swing.JTextField;
 import javax.swing.JButton;
-import client.business.TcpClient;
-import client.business.TcpServer;
-import client.utils.UiUtil;
 import javax.swing.border.EtchedBorder;
+
+import com.client.business.TcpClient;
+import com.client.business.TcpServer;
+import com.client.utils.SocketUtil;
+import com.client.utils.UiUtil;
+
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.net.UnknownHostException;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 
@@ -41,13 +45,14 @@ public class InitPage extends JFrame {
 					InitPage frame = InitPage.getInstance();
 					frame.setVisible(true);
 				} catch (IOException e1) {
-					UiUtil.showDialogPage("¾¯¸æ£º³ÌĞòÒÑÔËĞĞ»ò11111¶Ë¿Ú±»Õ¼ÓÃ");
+					UiUtil.showDialogPage("è­¦å‘Šï¼šç¨‹åºå·²è¿è¡Œæˆ–11111ç«¯å£è¢«å ç”¨", true);
 					e1.printStackTrace();
 				}
 			}
 		});
 	}
 
+	//
 	public static InitPage getInstance() {
 		if(page == null) {
 			synchronized (InitPage.class) {
@@ -79,7 +84,7 @@ public class InitPage extends JFrame {
 		ipPanel.setLayout(null);
 		
 		txtip = new JTextField();
-		txtip.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 12));
+		txtip.setFont(new Font("å¾®é›…è½¯é»‘", Font.PLAIN, 12));
 		txtip.setBorder(null);
 		txtip.setForeground(Color.WHITE);
 		txtip.setDisabledTextColor(Color.BLACK);
@@ -98,25 +103,15 @@ public class InitPage extends JFrame {
 		innerDisIp.setColumns(10);
 		
 		innerButton = new JButton("\u5185\u7F51\u8FDE\u63A5");
-		innerButton.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 12));
+		innerButton.setFont(new Font("å¾®é›…è½¯é»‘", Font.PLAIN, 12));
 		innerButton.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				//ÄÚÍøÁ¬½Óbutton
+				//å†…ç½‘è¿æ¥button
 				if(innerDisIp.getText().length() != 0 && innerDisIp.getText() != null) {
-					try {
-						System.out.println(innerDisIp.getText());
-						TcpClient tc = new TcpClient(innerDisIp.getText());
-					
-						tc.startConnect();
-						
-						DialogPage.getInstance().setVisible(false);
-						InitPage.getInstance().setVisible(false);
-						UiUtil.showSentPage();	
-					} catch (IOException e1) {
-						UiUtil.showDialogPage("ÇëÊäÈëÕıÈ·IP");
-						e1.printStackTrace();
-					}
+					SocketUtil.HOST = innerDisIp.getText();
+					TcpClient tc =TcpClient.getInstance();
+					tc.startConnect();
 				}
 			}
 		});
@@ -126,11 +121,11 @@ public class InitPage extends JFrame {
 		ipPanel.add(innerButton);
 		
 		outButton = new JButton("\u516C\u7F51\u8FDE\u63A5");
-		outButton.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 12));
+		outButton.setFont(new Font("å¾®é›…è½¯é»‘", Font.PLAIN, 12));
 		outButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//¹«ÍøÁ¬½Óbutton
-				UiUtil.showDialogPage("´Ë¹¦ÄÜÕıÔÚ¿ª·¢ÖĞ...");
+				//å…¬ç½‘è¿æ¥
+				UiUtil.showDialogPage("æ­¤åŠŸèƒ½æ­£åœ¨å¼€å‘ä¸­...", true);
 			}
 		});
 		outButton.setActionCommand("\u516C\u7F51\u8FDE\u63A5");
@@ -140,7 +135,7 @@ public class InitPage extends JFrame {
 		ipPanel.add(outButton);
 		
 		txtip_1 = new JTextField();
-		txtip_1.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 12));
+		txtip_1.setFont(new Font("å¾®é›…è½¯é»‘", Font.PLAIN, 12));
 		txtip_1.setText("\u4E91\u670D\u52A1\u5668IP\uFF1A");
 		txtip_1.setForeground(Color.WHITE);
 		txtip_1.setEnabled(false);

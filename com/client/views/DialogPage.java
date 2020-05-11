@@ -1,4 +1,4 @@
-package client.views;
+package com.client.views;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -10,7 +10,14 @@ import javax.swing.border.EmptyBorder;
 import java.awt.Color;
 import javax.swing.JTextField;
 import java.awt.Font;
+import java.awt.event.WindowEvent;
+import java.util.concurrent.ExecutorService;
+
 import javax.swing.border.EtchedBorder;
+
+import com.client.business.TcpClient;
+import com.client.common.WindowListennerAdapter;
+
 import java.awt.Component;
 import javax.swing.SwingConstants;
 import javax.swing.JTextArea;
@@ -27,6 +34,11 @@ public class DialogPage extends JDialog {
 	private DialogPage() {
 		setTitle("17\u7F51\u7EDC\u5DE5\u7A0B1\u73ED\u8FC7\u5C0F\u864E");
 		setBounds(100, 100, 309, 166);
+		addWindowListener(new WindowListennerAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+			}
+		});
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBackground(Color.WHITE);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -41,13 +53,13 @@ public class DialogPage extends JDialog {
 		textArea.setEnabled(false);
 		textArea.setEditable(false);
 		textArea.setLineWrap(true);
-		textArea.setFont(new Font("Œ¢»Ì—≈∫⁄", Font.PLAIN, 15));
+		textArea.setFont(new Font("ÂæÆËΩØÈõÖÈªë", Font.PLAIN, 15));
 		textArea.setBounds(10, 10, 273, 107);
 		contentPanel.add(textArea);
 	}
 
 	public static DialogPage getInstance() {
-		//µ•¿˝£∫DCLƒ£ Ω
+		//Âçï‰æãÔºöDCLÊ®°Âºè
 		if(instance == null) {
 			synchronized (DialogPage.class) {
 				if(instance == null)	instance = new DialogPage();

@@ -1,4 +1,4 @@
-package client.common;
+package com.client.common;
 
 public interface IServer {
 	

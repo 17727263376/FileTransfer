@@ -1,4 +1,4 @@
-package client.views;
+package com.client.views;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -13,8 +13,8 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.JProgressBar;
 import javax.swing.border.LineBorder;
 
-import client.common.IView;
-import client.common.WindowListennerAdapter;
+import com.client.common.IView;
+import com.client.common.WindowListennerAdapter;
 
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
@@ -71,16 +71,16 @@ public class ReceivePage extends JFrame implements IView {
 		contentPane.setLayout(null);
 		
 		receiveFilePath = new JTextField();
-		receiveFilePath.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 12));
+		receiveFilePath.setFont(new Font("å¾®é›…è½¯é»‘", Font.PLAIN, 12));
 		receiveFilePath.setColumns(10);
 		receiveFilePath.setBounds(64, 44, 257, 21);
 		contentPane.add(receiveFilePath);
 		
 		choiceFileButton = new JButton("\u9009\u62E9\u6587\u4EF6");
-		choiceFileButton.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 12));
+		choiceFileButton.setFont(new Font("å¾®é›…è½¯é»‘", Font.PLAIN, 12));
 		choiceFileButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//Ñ¡ÔñÎÄ¼ş
+				//Ñ¡ï¿½ï¿½ï¿½Ä¼ï¿½
 			}
 		});
 		choiceFileButton.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
@@ -89,7 +89,7 @@ public class ReceivePage extends JFrame implements IView {
 		contentPane.add(choiceFileButton);
 		
 		textField_1 = new JTextField();
-		textField_1.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 12));
+		textField_1.setFont(new Font("å¾®é›…è½¯é»‘", Font.PLAIN, 12));
 		textField_1.setText("\u53E6\u5B58\u4E3A:");
 		textField_1.setEnabled(false);
 		textField_1.setEditable(false);
@@ -101,10 +101,10 @@ public class ReceivePage extends JFrame implements IView {
 		contentPane.add(textField_1);
 		
 		acceptButton = new JButton("\u63A5\u53D7");
-		acceptButton.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 12));
+		acceptButton.setFont(new Font("å¾®é›…è½¯é»‘", Font.PLAIN, 12));
 		acceptButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//½ÓÊÜ
+				//æ¥å—
 			}
 		});
 		acceptButton.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
@@ -120,10 +120,10 @@ public class ReceivePage extends JFrame implements IView {
 		contentPane.add(receiveProgress);
 		
 		refuseButton = new JButton("\u62D2\u6536");
-		refuseButton.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 12));
+		refuseButton.setFont(new Font("å¾®é›…è½¯é»‘", Font.PLAIN, 12));
 		refuseButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//¾ÜÊÕ
+				//æ‹’ç»
 			}
 		});
 		refuseButton.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
@@ -132,7 +132,7 @@ public class ReceivePage extends JFrame implements IView {
 		contentPane.add(refuseButton);
 		
 		receiveTitleText = new JTextField();
-		receiveTitleText.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 12));
+		receiveTitleText.setFont(new Font("å¾®é›…è½¯é»‘", Font.PLAIN, 12));
 		receiveTitleText.setText("\u6536\u5230IP\uFF1A192.168.0.104\u53D1\u6765\u7684\u6587\u4EF6");
 		receiveTitleText.setEnabled(false);
 		receiveTitleText.setEditable(false);
@@ -144,7 +144,7 @@ public class ReceivePage extends JFrame implements IView {
 		contentPane.add(receiveTitleText);
 		
 		toastText = new JTextField();
-		toastText.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 12));
+		toastText.setFont(new Font("å¾®é›…è½¯é»‘", Font.PLAIN, 12));
 		toastText.setText("\u6B63\u5728\u63A5\u6536\u6587\u4EF6\uFF1A");
 		toastText.setEnabled(false);
 		toastText.setEditable(false);
