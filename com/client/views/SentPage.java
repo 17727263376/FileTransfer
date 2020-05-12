@@ -5,11 +5,13 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.Color;
 import javax.swing.JTextField;
+import javax.swing.BoundedRangeModel;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.border.EtchedBorder;
 import javax.swing.JProgressBar;
 import javax.swing.border.LineBorder;
+import javax.swing.event.ChangeListener;
 
 import com.client.business.TcpClient;
 import com.client.common.IView;
@@ -71,7 +73,6 @@ public class SentPage extends JFrame implements IView{
 				//选择文件夹
 				selectFile = UiUtil.showFileSelect(JFileChooser.FILES_AND_DIRECTORIES);
 				if(selectFile != null) {
-					
 					FilePathTextField.setText(selectFile.getAbsolutePath());
 				}
 			}

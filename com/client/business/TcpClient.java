@@ -41,6 +41,7 @@ public class TcpClient implements IClient {
 		fileSize = 0;
 		fileRootPath = "";
 		pool = Executors.newFixedThreadPool(5);
+		
 	}
 	
 	public void setView(IView view) {
@@ -64,6 +65,7 @@ public class TcpClient implements IClient {
 	public void startConnect() {
 		UiUtil.showDialogPage("正在连接，请稍等...", false);
 		pool.execute(() -> {
+			Thread.currentThread().setName("Client Contect");
 			try {
 				address = InetAddress.getByName(SocketUtil.HOST);
 				socketAddress = new InetSocketAddress(address, SocketUtil.SERCER_POST);
@@ -96,6 +98,7 @@ public class TcpClient implements IClient {
 	@Override
 	public void reciveMassage() {
 		pool.execute(() -> {
+			Thread.currentThread().setName("Client Receive Message");
 			try {
 				DataInputStream dis = new DataInputStream(inputStream);
 				String result = dis.readUTF();
@@ -138,17 +141,22 @@ public class TcpClient implements IClient {
 	 */
 	@Override
 	public void sendFile(File file) {
-		fileRootPath = file.getName();
-		fileSize = getFileSize(file);
-		
-		sendSingleFile(file);
-		
-		DataOutputStream dop = new DataOutputStream(outputStream);
-		try {
-			dop.writeUTF(SocketUtil.OVER);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		pool.execute(() -> {
+			
+			Thread.currentThread().setName("Client SendFile");
+			
+			fileRootPath = file.getName();
+			fileSize = getFileSize(file);
+			
+			sendFileDetail(file);
+			
+			DataOutputStream dop = new DataOutputStream(outputStream);
+			try {
+				dop.writeUTF(SocketUtil.OVER);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		});
 	}	
 	
 	/**
@@ -160,7 +168,7 @@ public class TcpClient implements IClient {
 	}
 	
 	
-	private void sendSingleFile(File file) {
+	private void sendFileDetail(File file) {
 		try {
 			//socket写出
 			DataOutputStream dop = new DataOutputStream(outputStream);
@@ -174,23 +182,27 @@ public class TcpClient implements IClient {
 				int len = 0;
 				//如果文件大小小于1024则字节数组大小为文件大小
 				int length = 0;
-				if(file.length() < (1024 * 8))	length = (int)file.length();
-				else							length = 1024 * 8;
+				if(file.length() < 1024)	length = (int)file.length();
+				else							length = 1024;
 				byte[] buffer = new byte[length];
 				while((len = dip.read(buffer)) != -1) {
 					curFileIndex += len;
 					dop.write(buffer, 0, len);
+					
 					view.refrushProgress((int) ((curFileIndex / fileSize)*100));
+					
 				}
 			}else {
 				File[] list = file.listFiles();
 				for(File i : list) {
-					sendSingleFile(i);
+					sendFileDetail(i);
 				}
 			}
 		} catch (FileNotFoundException e) {
+			System.out.println("client send file FileNotFoundException");
 			e.printStackTrace();
 		} catch (IOException e) {
+			System.out.println("client send file IOException");
 			e.printStackTrace();
 		}
 	}
