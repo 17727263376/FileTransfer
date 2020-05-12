@@ -71,6 +71,7 @@ public class SentPage extends JFrame implements IView{
 				//选择文件夹
 				selectFile = UiUtil.showFileSelect(JFileChooser.FILES_AND_DIRECTORIES);
 				if(selectFile != null) {
+					
 					FilePathTextField.setText(selectFile.getAbsolutePath());
 				}
 			}
@@ -100,8 +101,7 @@ public class SentPage extends JFrame implements IView{
 				if(selectFile != null) {
 					if(canSend) {
 						System.out.println("开始发送文件");
-						
-						
+						client.sendFile(selectFile);
 					}else {
 						UiUtil.showDialogPage("对方暂未选择接收您的文件，请等待...", true);
 					}

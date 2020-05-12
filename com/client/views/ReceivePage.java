@@ -44,22 +44,6 @@ public class ReceivePage extends JFrame implements IView {
 	private boolean canReceive = false;
 
 	/**
-	 * Launch the application.
-	 */
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					ReceivePage frame = new ReceivePage();
-//					frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
-
-	/**
 	 * Create the frame.
 	 */
 	public ReceivePage(String ip) {
@@ -124,6 +108,8 @@ public class ReceivePage extends JFrame implements IView {
 				//接受
 				if(selectFile != null) {
 					server.sendMessage(SocketUtil.ACCEPT_CONNECT);
+					
+					server.receiveFile(selectFile.getAbsolutePath());
 					
 					System.out.println("开始接收文件");
 				}else {

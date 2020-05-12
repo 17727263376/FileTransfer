@@ -1,5 +1,6 @@
 package com.client.common;
 
+import java.io.File;
 import java.io.IOException;
 
 public interface IServer {
@@ -10,4 +11,5 @@ public interface IServer {
 	
 	public void sendMessage(String msg);
 	
+	public void receiveFile(String filePath);
 }

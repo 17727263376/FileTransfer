@@ -6,7 +6,9 @@ public class SocketUtil {
 	
 	public static String HOST;
 	
-	public static String ACCEPT_CONNECT = "yes";
+	public static final String ACCEPT_CONNECT = "yes";
 	
-	public static String REFUSE_CONNECT = "no";
+	public static final String REFUSE_CONNECT = "no";
+	
+	public static final String OVER = "over";
 }

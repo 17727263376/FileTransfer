@@ -1,6 +1,6 @@
 package com.client.common;
 
-import java.io.IOException;
+import java.io.*;
 
 public interface IClient {
 
@@ -10,4 +10,6 @@ public interface IClient {
 	public void close();
 	public void interruptConnect();
 	public void reciveMassage();
+	public void sendFile(File file);
+	
 }

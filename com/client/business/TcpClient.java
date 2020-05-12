@@ -1,8 +1,9 @@
 package com.client.business;
 
-import java.io.IOException;
 import java.io.*;
+import java.math.BigInteger;
 import java.net.*;
+import java.util.LinkedList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -28,7 +29,17 @@ public class TcpClient implements IClient {
 	
 	private static TcpClient instance;
 	
+	private long curFileIndex;
+	private long fileSize;
+	
+	private String fileRootPath;
+	
+	//private LinkedList<File> files;
+	
 	private TcpClient() {
+		curFileIndex = 0;
+		fileSize = 0;
+		fileRootPath = "";
 		pool = Executors.newFixedThreadPool(5);
 	}
 	
@@ -120,5 +131,87 @@ public class TcpClient implements IClient {
 			System.out.println("socket.close exception");
 			e.printStackTrace();
 		}
+	}
+	
+	/**
+	 * 传输文件，并在传输结束发送over信号
+	 */
+	@Override
+	public void sendFile(File file) {
+		fileRootPath = file.getName();
+		fileSize = getFileSize(file);
+		
+		sendSingleFile(file);
+		
+		DataOutputStream dop = new DataOutputStream(outputStream);
+		try {
+			dop.writeUTF(SocketUtil.OVER);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}	
+	
+	/**
+	 * 获取从选中文件夹开始的路径
+	 */
+	private String spliceFilePath(String path) {
+		int start = path.indexOf(this.fileRootPath);
+		return path.substring(start);
+	}
+	
+	
+	private void sendSingleFile(File file) {
+		try {
+			//socket写出
+			DataOutputStream dop = new DataOutputStream(outputStream);
+			String path = spliceFilePath(file.getAbsolutePath());
+			//1. 写出文件名以及文件大小
+			dop.writeUTF(path + "&" + file.length());
+			//2. 以字节形式写出文件
+			if(file.isFile()) {
+				//文件读入
+				DataInputStream dip = new DataInputStream(new FileInputStream(file));
+				int len = 0;
+				//如果文件大小小于1024则字节数组大小为文件大小
+				int length = 0;
+				if(file.length() < (1024 * 8))	length = (int)file.length();
+				else							length = 1024 * 8;
+				byte[] buffer = new byte[length];
+				while((len = dip.read(buffer)) != -1) {
+					curFileIndex += len;
+					dop.write(buffer, 0, len);
+					view.refrushProgress((int) ((curFileIndex / fileSize)*100));
+				}
+			}else {
+				File[] list = file.listFiles();
+				for(File i : list) {
+					sendSingleFile(i);
+				}
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * 递归获取文件大小
+	 */
+	private long getFileSize(File file) {
+		if(file.isFile()) {
+			//System.out.println(file.getAbsolutePath());
+			return file.length();
+		}else if (file.isDirectory()){
+			//System.out.println(file.getAbsolutePath());
+			File[] list = file.listFiles();
+			long sum = 0;
+			for(File i : list) {
+				sum += getFileSize(i);
+			}
+			return sum;
+		}else {
+			return -1;
+		}
+	}
 }
