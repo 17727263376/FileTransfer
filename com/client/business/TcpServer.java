@@ -6,6 +6,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
+import javax.swing.SwingUtilities;
+
 import com.client.common.IServer;
 import com.client.common.IView;
 import com.client.utils.SocketUtil;
@@ -99,8 +101,18 @@ public class TcpServer implements IServer {
 					fileSize = 0;
 					curFileIndex = 0;
 					
+					boolean isDirectory = false;
+					
 					if(mass.length > 1) {
-						fileSize = Long.parseLong(mass[1]);
+						if(mass[1].equals(SocketUtil.IS_DIRECTORY)) {
+							isDirectory = true;
+						}else {
+							isDirectory = false;
+							fileSize = Long.parseLong(mass[1]);
+						}
+					}else {
+						//文件传输出现错误
+						UiUtil.showDialogPage("文件传输出现错误", true);
 					}
 					
 					//4. 如果接收方选取的路径为D:这种跟盘符，则不需要加File.separatorChar
@@ -111,8 +123,12 @@ public class TcpServer implements IServer {
 						file = new File(filePath + File.separatorChar + path);
 					}
 					
+					
 					//5. 根据文件路径名是否还有“.”，判断接下来传输的是文件还是文件夹
-					if(path.contains(".")) {
+					if(!isDirectory) {
+						//创建新文件
+						file.createNewFile();
+						
 						DataOutputStream dos = new DataOutputStream(new FileOutputStream(file));
 						int len = 0;
 						int length = 0;
@@ -124,11 +140,11 @@ public class TcpServer implements IServer {
 						while((len = dis.read(buffer)) != -1) {
 							curFileIndex += len;
 							dos.write(buffer, 0, len);
-							
-							view.refrushProgress((int) ((curFileIndex / fileSize)*100));
+							dos.flush();
+							view.refrushProgress((int) (((double)curFileIndex / fileSize)*100));
 							
 							//动态调整buffer数组，使其可以刚好接受到文件的末尾部分，避免混乱
-							if(fileSize - curFileIndex < 1024) {
+							if(fileSize - curFileIndex < 1024 && fileSize - curFileIndex >= 0) {
 								buffer = new byte[(int)(fileSize - curFileIndex)];
 							}
 							

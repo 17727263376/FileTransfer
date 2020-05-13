@@ -7,6 +7,8 @@ import java.util.LinkedList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import javax.swing.SwingUtilities;
+
 import com.client.common.IClient;
 import com.client.common.IView;
 import com.client.utils.SocketUtil;
@@ -173,10 +175,10 @@ public class TcpClient implements IClient {
 			//socket写出
 			DataOutputStream dop = new DataOutputStream(outputStream);
 			String path = spliceFilePath(file.getAbsolutePath());
-			//1. 写出文件名以及文件大小
-			dop.writeUTF(path + "&" + file.length());
-			//2. 以字节形式写出文件
 			if(file.isFile()) {
+				//1. 写出文件名以及文件大小
+				dop.writeUTF(path + "&" + file.length());
+				//2. 以字节形式写出文件
 				//文件读入
 				DataInputStream dip = new DataInputStream(new FileInputStream(file));
 				int len = 0;
@@ -188,21 +190,22 @@ public class TcpClient implements IClient {
 				while((len = dip.read(buffer)) != -1) {
 					curFileIndex += len;
 					dop.write(buffer, 0, len);
-					
-					view.refrushProgress((int) ((curFileIndex / fileSize)*100));
-					
+					dop.flush();
+					view.refrushProgress((int) (((double)curFileIndex / fileSize)*100));
 				}
 			}else {
+				//1. 写出文件名以及标明此为文件夹
+				dop.writeUTF(path + "&" + SocketUtil.IS_DIRECTORY);
 				File[] list = file.listFiles();
 				for(File i : list) {
 					sendFileDetail(i);
 				}
 			}
 		} catch (FileNotFoundException e) {
-			System.out.println("client send file FileNotFoundException");
+			//System.out.println("client send file FileNotFoundException");
 			e.printStackTrace();
 		} catch (IOException e) {
-			System.out.println("client send file IOException");
+			//System.out.println("client send file IOException");
 			e.printStackTrace();
 		}
 	}
@@ -212,10 +215,10 @@ public class TcpClient implements IClient {
 	 */
 	private long getFileSize(File file) {
 		if(file.isFile()) {
-			//System.out.println(file.getAbsolutePath());
+			System.out.println(file.getAbsolutePath());
 			return file.length();
 		}else if (file.isDirectory()){
-			//System.out.println(file.getAbsolutePath());
+			System.out.println(file.getAbsolutePath());
 			File[] list = file.listFiles();
 			long sum = 0;
 			for(File i : list) {

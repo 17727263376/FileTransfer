@@ -11,4 +11,6 @@ public class SocketUtil {
 	public static final String REFUSE_CONNECT = "no";
 	
 	public static final String OVER = "over";
+	
+	public static final String IS_DIRECTORY = "*****";
 }
